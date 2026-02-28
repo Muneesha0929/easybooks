@@ -1,0 +1,83 @@
+<div class="content-area">
+  <div class="page-header">
+    <h1>Journal Entries</h1>
+    <p>Browse and manage all your recorded journal entries in a modern, readable list.</p>
+  </div>
+
+  <div class="card fade-in">
+    <div class="card-header">
+      <h3 class="card-title">All Journal Entries ({{ filteredEntries.length }})</h3>
+      <div style="display: flex; gap: 12px;">
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="Search entries..." 
+          style="width: 220px;"
+          [(ngModel)]="searchTerm"
+          (input)="searchEntries()" />
+        <button class="btn btn-success btn-sm" (click)="navigateToAddJournal()">
+          <i class="fas fa-plus"></i> Add New
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" style="padding: 48px; text-align: center;">
+      <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+      <p style="margin-top: 12px; color: var(--text-secondary);">Loading journal entries...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !isLoading" style="padding: 24px; text-align: center; color: #c00;">
+      <i class="fas fa-exclamation-circle" style="font-size: 32px;"></i>
+      <p style="margin-top: 12px;">{{ errorMessage }}</p>
+      <button class="btn btn-primary btn-sm" style="margin-top: 12px;" (click)="loadJournalEntries()">
+        <i class="fas fa-redo"></i> Retry
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !errorMessage && filteredEntries.length === 0" style="padding: 48px; text-align: center;">
+      <i class="fas fa-inbox" style="font-size: 48px; color: var(--text-secondary); opacity: 0.5;"></i>
+      <p style="margin-top: 12px; color: var(--text-secondary);">No journal entries found</p>
+      <button class="btn btn-success btn-sm" style="margin-top: 12px;" (click)="navigateToAddJournal()">
+        <i class="fas fa-plus"></i> Add Your First Entry
+      </button>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && filteredEntries.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Account</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Narration</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredEntries">
+            <td>{{ formatDate(entry.date) }}</td>
+            <td>{{ entry.accountName }}</td>
+            <td>{{ formatCurrency(entry.debit) }}</td>
+            <td>{{ formatCurrency(entry.credit) }}</td>
+            <td>{{ entry.narration }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon btn-edit" title="Edit" (click)="editEntry(entry._id!)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-icon btn-delete" title="Delete" (click)="deleteEntry(entry._id!)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="auth-wrapper">
+  <div class="auth-card fade-in">
+    <div class="auth-logo">
+      <h1><i class="fas fa-calculator"></i> EasyBooks</h1>
+      <p>Create Your Account</p>
+    </div>
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="Enter your full name" 
+          [(ngModel)]="signupData.fullName"
+          name="fullName"
+          required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input 
+          type="email" 
+          class="form-input" 
+          placeholder="Enter your email" 
+          [(ngModel)]="signupData.email"
+          name="email"
+          required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="Enter your company name" 
+          [(ngModel)]="signupData.companyName"
+          name="companyName"
+          required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input 
+          type="password" 
+          class="form-input" 
+          placeholder="Create a password"
+          [(ngModel)]="signupData.password"
+          name="password" 
+          required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input 
+          type="password" 
+          class="form-input" 
+          placeholder="Confirm your password"
+          [(ngModel)]="signupData.confirmPassword"
+          name="confirmPassword" 
+          required>
+        <span *ngIf="!passwordsMatch() && signupData.confirmPassword" class="error-message">
+          Passwords do not match
+        </span>
+      </div>
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="signupData.agreeTerms"
+            name="agreeTerms"
+            required>
+          <span class="checkmark"></span>
+          I agree to the <a href="#" class="terms-link">Terms and Conditions</a>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!signupForm.form.valid || !passwordsMatch()">
+        <i class="fas fa-user-plus"></i> Create Account
+      </button>
+    </form>
+    <div class="auth-link">
+      <p>Already have an account? <a href="#" (click)="navigateToLogin()">Sign In</a></p>
+    </div>
+  </div>
+</div>

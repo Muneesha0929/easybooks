@@ -1,0 +1,49 @@
+<div class="content-area">
+  <div class="page-header">
+    <h1>Profit & Loss Statement</h1>
+  </div>
+
+  <!-- INCOME -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title text-success">Revenue / Income</h3>
+    </div>
+
+    <table class="table">
+      <tr *ngFor="let item of incomes">
+        <td>{{ item.name }}</td>
+        <td class="text-end fw-bold">₹{{ item.amount }}</td>
+      </tr>
+
+      <tr class="balance-total">
+        <td><strong>Total Income</strong></td>
+        <td class="text-end"><strong>₹{{ totalIncome }}</strong></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- EXPENSES -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title text-danger">Expenses</h3>
+    </div>
+
+    <table class="table">
+      <tr *ngFor="let item of expenses">
+        <td>{{ item.name }}</td>
+        <td class="text-end fw-bold">₹{{ item.amount }}</td>
+      </tr>
+
+      <tr class="balance-total">
+        <td><strong>Total Expenses</strong></td>
+        <td class="text-end"><strong>₹{{ totalExpense }}</strong></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- NET PROFIT -->
+  <div class="card profit-box">
+    <h2>Net Profit</h2>
+    <h1>₹{{ netProfit }}</h1>
+  </div>
+</div>

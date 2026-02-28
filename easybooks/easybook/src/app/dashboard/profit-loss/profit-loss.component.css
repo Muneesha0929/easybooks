@@ -1,0 +1,81 @@
+:host {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary: #64748b;
+  --dark: #1e293b;
+  --light: #f8fafc;
+  --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --success: #10b981;
+  --danger: #ef4444;
+  display: block;
+  height: 100vh;
+  overflow: auto;
+  background: var(--light);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--dark);
+}
+
+.balance-total {
+  font-weight: 700;
+  border-top: 2px solid var(--primary);
+  color: var(--primary);
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+h2, h1, p {
+  margin: 0;
+}
+
+h2 {
+  font-weight: 700;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    padding: 12px 12px;
+  }
+  .card {
+    padding: 16px 12px;
+  }
+  .table td {
+    padding: 10px 8px;
+  }
+}

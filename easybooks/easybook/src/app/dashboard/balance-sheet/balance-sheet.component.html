@@ -1,0 +1,73 @@
+<div class="content-area">
+  <div class="report-section fade-in">
+    <div class="report-header">
+      <h2 class="report-title">Balance Sheet</h2>
+      <p>Real-time data from your journal</p>
+    </div>
+
+    <div class="balance-columns">
+
+      <!-- ASSETS -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Assets</h3>
+        </div>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let acc of accounts" >
+              <ng-container *ngIf="getBalance(acc) > 0">
+                <td>{{ acc.name }}</td>
+                <td style="text-align:right">
+                  ₹{{ getBalance(acc) }}
+                </td>
+              </ng-container>
+            </tr>
+
+            <tr class="balance-total">
+              <td><strong>Total Assets</strong></td>
+              <td style="text-align:right">
+                <strong>₹{{ totalAssets }}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LIABILITIES -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Liabilities & Equity</h3>
+        </div>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let acc of accounts">
+              <ng-container *ngIf="getBalance(acc) < 0">
+                <td>{{ acc.name }}</td>
+                <td style="text-align:right">
+                  ₹{{ -getBalance(acc) }}
+                </td>
+              </ng-container>
+            </tr>
+
+            <tr>
+              <td><strong>Net Worth</strong></td>
+              <td style="text-align:right">
+                ₹{{ netWorth }}
+              </td>
+            </tr>
+
+            <tr class="balance-total">
+              <td><strong>Total Liabilities</strong></td>
+              <td style="text-align:right">
+                <strong>₹{{ totalLiabilities }}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+:host {
+  --primary: #2563eb;
+  --warning: #f59e0b;
+  --success: #10b981;
+  --border: #e2e8f0;
+  --light: #f8fafc;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --dark: #1e293b;
+  display: block;
+  background: var(--light);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.content-area {
+  max-width: 960px;
+  margin: 48px auto;
+  padding: 16px 24px;
+}
+
+.report-section {
+  margin-bottom: 32px;
+}
+
+.report-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.report-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.balance-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 24px;
+  box-shadow: var(--shadow);
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td {
+  padding: 12px 20px;
+  color: var(--dark);
+}
+
+.table tr:nth-child(even) > td {
+  background: #f9fafb;
+}
+
+.balance-total {
+  font-weight: 700;
+  background: var(--light);
+  border-top: 2px solid var(--primary);
+  font-size: 1.1rem;
+  color: var(--primary);
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .balance-columns {
+    grid-template-columns: 1fr;
+  }
+}

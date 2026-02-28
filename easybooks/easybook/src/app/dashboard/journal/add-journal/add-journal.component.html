@@ -1,0 +1,82 @@
+<div class="content-area">
+  <div class="page-header">
+    <h1>Add Journal Entry</h1>
+    <p>Record a new financial transaction in your journal.</p>
+  </div>
+  <div class="card">
+    <form class="fade-in" (ngSubmit)="onSubmit()" #journalForm="ngForm" autocomplete="off">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Date *</label>
+          <input 
+            type="date" 
+            class="form-input" 
+            [(ngModel)]="journalEntry.date" 
+            name="date"
+            required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Name *</label>
+          <select 
+            class="form-input" 
+            [(ngModel)]="journalEntry.accountName" 
+            name="accountName"
+            required>
+            <option value="">Select Account</option>
+            <option value="cash">Cash Account</option>
+            <option value="bank">Bank Account</option>
+            <option value="sales">Sales Revenue</option>
+            <option value="rent">Office Rent</option>
+            <option value="utilities">Utilities</option>
+            <option value="salary">Salary Expense</option>
+            <option value="equipment">Equipment</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Debit Amount</label>
+          <input 
+            type="number" 
+            class="form-input" 
+            placeholder="0.00" 
+            step="0.01"
+            [(ngModel)]="journalEntry.debit" 
+            name="debit" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Credit Amount</label>
+          <input 
+            type="number" 
+            class="form-input" 
+            placeholder="0.00" 
+            step="0.01"
+            [(ngModel)]="journalEntry.credit" 
+            name="credit" />
+        </div>
+      </div>
+      <div class="form-group" style="margin-top: 16px;">
+        <label class="form-label">Narration / Description *</label>
+        <textarea 
+          class="form-input" 
+          rows="3" 
+          placeholder="Enter transaction description"
+          [(ngModel)]="journalEntry.narration" 
+          name="narration"
+          required></textarea>
+      </div>
+      
+      <div *ngIf="errorMessage" style="margin-top: 12px; padding: 12px; background: #fee; border-radius: 6px; color: #c00;">
+        {{ errorMessage }}
+      </div>
+      
+      <div style="display: flex; gap: 12px; margin-top: 16px;">
+        <button type="submit" class="btn btn-success" [disabled]="isLoading || !journalForm.valid">
+          <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading" [class.fa-spin]="isLoading"></i> 
+          {{ isLoading ? 'Saving...' : 'Save Entry' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isLoading">
+          <i class="fas fa-redo"></i> Reset
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
