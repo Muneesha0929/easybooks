@@ -1,71 +1,96 @@
+console.log("🚀 THIS IS THE REAL SERVER FILE RUNNING");
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./src/config/database');
 
-// Import routes
-const authRoutes = require('./src/routes/auth.routes');
-const journalRoutes = require('./src/routes/journal.routes');
-
 const app = express();
 
-// Connect to MongoDB
+/* =========================
+   CONNECT DATABASE
+========================= */
+
 connectDB();
 
-// Middleware - UPDATED CORS to allow all localhost ports
+/* =========================
+   MIDDLEWARE
+========================= */
+
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like Postman, mobile apps)
-    if (!origin) return callback(null, true);
-    
-    // Allow any localhost port (handles 4200, 52371, etc.)
-    if (origin.startsWith('http://localhost:')) {
-      return callback(null, true);
-    }
-    
-    // Allow 127.0.0.1 as well
-    if (origin.startsWith('http://127.0.0.1:')) {
-      return callback(null, true);
-    }
-    
-    // Reject other origins
-    callback(new Error('Not allowed by CORS'));
-  },
+  origin: true,
   credentials: true
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/journal', journalRoutes);
+app.use('/uploads', express.static('uploads'));
 
-// Health check
+/* =========================
+   HEALTH CHECK
+========================= */
+
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     message: 'EasyBooks API is running',
     timestamp: new Date().toISOString()
   });
 });
 
-// Error handling middleware
+/* =========================
+   IMPORT ROUTES
+========================= */
+
+const authRoutes = require('./src/routes/auth.routes');
+const journalRoutes = require('./src/routes/journal.routes');
+
+/* =========================
+   ROUTE MOUNTING
+========================= */
+
+app.use('/api/auth', authRoutes);
+app.use('/api/journal', journalRoutes);
+
+/* =========================
+   TEST ROUTE (DEBUG)
+========================= */
+
+app.get('/api/test', (req, res) => {
+  res.json({
+    success: true,
+    message: "Server routing working"
+  });
+});
+
+/* =========================
+   404 HANDLER
+========================= */
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
+});
+
+/* =========================
+   ERROR HANDLER
+========================= */
+
 app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
-  res.status(err.status || 500).json({ 
+  console.error('Server Error:', err);
+
+  res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error'
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ 
-    success: false,
-    message: 'Route not found' 
-  });
-});
+/* =========================
+   START SERVER
+========================= */
 
 const PORT = process.env.PORT || 5000;
 

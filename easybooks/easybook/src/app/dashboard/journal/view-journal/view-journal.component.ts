@@ -76,12 +76,6 @@ export class ViewJournal implements OnInit {
     this.router.navigate(['/dashboard/add-journal']);
   }
 
-  editEntry(entryId: string) {
-    console.log('Edit entry:', entryId);
-    // TODO: Navigate to edit page or open edit modal
-    alert('Edit functionality coming soon!');
-  }
-
   deleteEntry(entryId: string) {
     if (!confirm('Are you sure you want to delete this entry?')) {
       return;

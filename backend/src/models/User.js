@@ -25,6 +25,13 @@ const userSchema = new mongoose.Schema({
     enum: ['Free', 'Premium'],
     default: 'Free'
   },
+
+  // ✅ ADDED PROFILE PHOTO FIELD
+  profilePhoto: {
+    type: String,
+    default: ""
+  },
+
   createdAt: {
     type: Date,
     default: Date.now

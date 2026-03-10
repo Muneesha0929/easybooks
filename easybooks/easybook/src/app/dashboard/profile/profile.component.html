@@ -6,90 +6,201 @@
 
   <div class="card fade-in">
     <div style="display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start;">
+
+      <!-- PROFILE PHOTO -->
       <div style="text-align: center;">
-        <div style="width: 120px; height: 120px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 700; margin: 0 auto 20px;">
-          {{ currentUser.name | slice:0:2 | uppercase }}
+        <div
+          class="profile-avatar"
+          [style.background-image]="profilePhoto ? 'url(' + profilePhoto + ')' : ''"
+          style="width: 120px; height: 120px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 700; margin: 0 auto 20px;"
+        >
+          <ng-container *ngIf="!profilePhoto">
+            {{ currentUser.name | slice:0:2 | uppercase }}
+          </ng-container>
         </div>
-        <button class="btn btn-secondary btn-sm">
+
+        <input
+          type="file"
+          #fileInput
+          hidden
+          (change)="onPhotoSelected($event)"
+          accept="image/*"
+        >
+
+        <button class="btn btn-secondary btn-sm" (click)="fileInput.click()">
           <i class="fas fa-camera"></i> Change Photo
         </button>
       </div>
 
+      <!-- PROFILE INFO -->
       <div>
+
         <div class="form-grid">
+
           <div class="form-group">
             <label class="form-label">Full Name</label>
-            <input type="text" class="form-input" [value]="currentUser.name" readonly />
+            <input
+              type="text"
+              class="form-input"
+              [(ngModel)]="editableUser!.name"
+              [readonly]="!isEditing"
+            />
           </div>
+
           <div class="form-group">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" [value]="currentUser.email" readonly />
+            <input
+              type="email"
+              class="form-input"
+              [(ngModel)]="editableUser!.email"
+              [readonly]="!isEditing"
+            />
           </div>
+
           <div class="form-group">
             <label class="form-label">Member Since</label>
-            <input type="text" class="form-input" value="November 2025" readonly />
+            <input
+              type="text"
+              class="form-input"
+              [value]="getMemberSince()"
+              readonly
+            />
           </div>
+
           <div class="form-group">
             <label class="form-label">Account Type</label>
-            <input type="text" class="form-input" [value]="currentUser.accountType" readonly />
+            <input
+              type="text"
+              class="form-input"
+              [value]="currentUser.accountType"
+              readonly
+            />
           </div>
+
         </div>
 
+        <!-- BUTTONS -->
         <div style="margin-top: 24px; display: flex; gap: 12px;">
-          <button class="btn btn-primary">
+
+          <button
+            *ngIf="!isEditing"
+            class="btn btn-primary"
+            (click)="toggleEdit()"
+          >
             <i class="fas fa-edit"></i> Edit Profile
           </button>
-          <button class="btn btn-warning">
+
+          <button
+            *ngIf="isEditing"
+            class="btn btn-success"
+            (click)="saveProfile()"
+          >
+            <i class="fas fa-save"></i> Save
+          </button>
+
+          <button
+            class="btn btn-warning"
+            (click)="toggleChangePassword()"
+          >
             <i class="fas fa-key"></i> Change Password
           </button>
+
         </div>
+
+        <!-- CHANGE PASSWORD -->
+        <div *ngIf="isChangingPassword" style="margin-top: 16px;">
+
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input
+              type="password"
+              class="form-input"
+              [(ngModel)]="newPassword"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <input
+              type="password"
+              class="form-input"
+              [(ngModel)]="confirmPassword"
+            />
+          </div>
+
+          <button
+            class="btn btn-success btn-sm"
+            (click)="changePassword()"
+          >
+            Update Password
+          </button>
+
+        </div>
+
       </div>
     </div>
   </div>
 
+  <!-- STATISTICS -->
   <div class="card fade-in">
+
     <div class="card-header">
       <h3 class="card-title">Account Statistics</h3>
     </div>
+
     <div class="stats-grid">
+
       <div class="stat-card">
         <div class="stat-icon primary">
           <i class="fas fa-calendar-day"></i>
         </div>
-        <div class="stat-value">New</div>
+        <div class="stat-value">{{ daysActive }}</div>
         <div class="stat-label">Days Active</div>
       </div>
+
       <div class="stat-card">
         <div class="stat-icon success">
           <i class="fas fa-book"></i>
         </div>
-        <div class="stat-value">0</div>
+        <div class="stat-value">{{ journalCount }}</div>
         <div class="stat-label">Journal Entries</div>
       </div>
+
       <div class="stat-card">
         <div class="stat-icon warning">
           <i class="fas fa-file-alt"></i>
         </div>
-        <div class="stat-value">0</div>
+        <div class="stat-value">{{ reportsGenerated }}</div>
         <div class="stat-label">Reports Generated</div>
       </div>
+
       <div class="stat-card">
         <div class="stat-icon info">
           <i class="fas fa-download"></i>
         </div>
-        <div class="stat-value">0</div>
+        <div class="stat-value">{{ exportsCount }}</div>
         <div class="stat-label">Exports</div>
       </div>
+
     </div>
+
   </div>
 </div>
 
-<!-- Loading state -->
+<!-- LOADING -->
 <div class="content-area" *ngIf="!currentUser && isLoading">
+
   <div class="card">
+
     <div style="text-align: center; padding: 48px;">
-      <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: var(--primary);"></i>
-      <p style="margin-top: 16px; color: var(--text-secondary);">Loading profile...</p>
+      <i class="fas fa-spinner fa-spin"
+        style="font-size: 48px; color: var(--primary);"></i>
+
+      <p style="margin-top: 16px; color: var(--text-secondary);">
+        Loading profile...
+      </p>
     </div>
+
   </div>
+
 </div>

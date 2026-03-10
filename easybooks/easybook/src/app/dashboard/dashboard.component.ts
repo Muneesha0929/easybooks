@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 interface User {
@@ -31,7 +30,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Load user if available (no force redirect)
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.currentUser = {
@@ -41,9 +39,6 @@ export class DashboardComponent implements OnInit {
             ? 'Premium Account'
             : 'Free Account'
         };
-      } else {
-        console.log('No active user session found (development mode)');
-        // Do NOT redirect to login
       }
     });
   }
